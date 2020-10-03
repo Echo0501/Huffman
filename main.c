@@ -18,11 +18,6 @@ typedef struct {
 	float y2;
 } rect;
 
-// get_value, determines the weight of an item in the tree
-float get_val_rect(void * obj) {
-	rect * cr = (rect *) obj;
-	return (cr->x2 - cr->x1)*(cr->x2 - cr->x1) + (cr->y2 - cr->y1)*(cr->y2 - cr->y1);
-}
 
 
 // make_item, used to make new ITEMs for parent objects
@@ -40,6 +35,16 @@ void * make_rect(void * A, void * B) {
 	return rtn;
 }
 
+float get_value_rect(void * A) {
+	rect * cA = (rect *)A;
+	
+	float dx = cA->x2 - cA->x1;
+	float dy = cA->y2 - cA->y1;
+	
+	return dx*dx+dy*dy;
+}
+
+
 // Basic output for debug?
 void print_rect(void * o) {
 	rect * cO = (rect *)o;
@@ -47,17 +52,11 @@ void print_rect(void * o) {
 }
 
 
+
+
 int main(void) {
 	
-	/*
-	
-	Making a 10x10 area of rectangles.
-	
-	Then a Node tree of rectangles as they are merged together
-	
-	*/
-	
-	int n = 10;
+	int n = 16;
 	int nn = n*n;
 	
 	rect ** rect_list = (rect **) malloc(sizeof(rect *) * nn);
@@ -81,6 +80,7 @@ int main(void) {
 			// Make Node from rect
 			Node * s = (Node *) malloc(sizeof(Node));
 			s->ITEM = (void *) r;
+			s->value = get_value_rect(s->ITEM);
 			
 			// No children
 			s->A = NULL;
@@ -91,7 +91,7 @@ int main(void) {
 	}
 	
 	// Make tree form list, with functions.
-	Node * Top = huffman(node_list, nn, &get_val_rect, &make_rect);
+	Node * Top = BuildTree(node_list, nn, &make_rect, &get_value_rect);
 	
 	// Print tree.
 	print_node(Top, 0, &print_rect);
