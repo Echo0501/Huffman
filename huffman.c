@@ -63,36 +63,8 @@ Node * reduce_node(Node * A, Node * B, void*(*make_item)(void *, void *), float(
  */
 int compare_nodes(const void* A, const void* B) {
 	
-	Node * cA = *((Node **)A);
-	Node * cB = *((Node **)B);
-	
-	return (int)(cA->value - cB->value);
+	return (int)((*(*((Node **)A))).value - (*(*((Node **)B))).value);
 }
-
-
-/**
- * Method to insert a new node into a list of sorted nodes.
- * 
- * @param Node * new_node		Node to be inserted
- * @param Node ** working_base	List of Nodes, for new_node to be placed into
- * @param int working_base_size	Size current size of the working_base array
- */
-void insert_sort(Node * new_node, Node ** working_base, int working_base_size) {
-	
-	for(int i = 0; i < working_base_size; i++) {
-		if (compare_nodes(&working_base[i], &new_node) > 0) {
-			
-			memmove(&(working_base[i+1]), &(working_base[i]), sizeof(Node *) * (working_base_size - i));
-			working_base[i] = new_node;
-			
-			return;
-		}
-	}
-	
-	working_base[working_base_size] = new_node;
-}
-
-
 
 
 /**
@@ -122,7 +94,7 @@ Node * huffman(Node ** working_list,
 		return working_list[0];
 	}
 	
-	
+	// DEBUG OUTPUT
 	printf("%d, %d\n", count, working_base_size);
 	
 	// Find smallest value
@@ -135,7 +107,7 @@ Node * huffman(Node ** working_list,
 		
 		if (fav_Node == working_base[i]) {
 			
-			memcpy(&(working_base[i]), &(working_base[i+1]), sizeof(Node *) * (working_base_size - 1 - i));
+			memmove(&(working_base[i]), &(working_base[i+1]), sizeof(Node *) * (working_base_size - 1 - i));
 			working_base[--working_base_size] = NULL;
 		
 		} else if (fav_Node->A == working_base[i]->A || 
@@ -163,9 +135,9 @@ Node * huffman(Node ** working_list,
 			fav_i = i;
 		} else if (working_list[i] == fav_Node->B) {
 			fav_j = i;
+			break;
 		}
 	}
-	
 	
 	// remove items I and J
 	memmove(&(working_list[fav_i]),	&(working_list[fav_i+1]),	sizeof(Node *) * (fav_j - fav_i - 1));
@@ -176,11 +148,15 @@ Node * huffman(Node ** working_list,
 	
 	
 	
+	
+	
 	// Add new items to working base
 	for(int i = 0; i < count - 1; i++) {
 		Node * new_node = reduce_node(working_list[i], fav_Node, make_item, get_value);
-		insert_sort(new_node, working_base, working_base_size++);
+		working_base[working_base_size++] = new_node;
 	}
+	qsort(working_base, working_base_size, sizeof(Node *), compare_nodes);
+	
 	
 	
 	// recursive return

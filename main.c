@@ -56,7 +56,7 @@ void print_rect(void * o) {
 
 int main(void) {
 	
-	int n = 16;
+	int n = 32;
 	int nn = n*n;
 	
 	rect ** rect_list = (rect **) malloc(sizeof(rect *) * nn);
