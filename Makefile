@@ -3,10 +3,10 @@
 CC = gcc
 
 # Compile flags
-CFLAGS = -ggdb3 -Wall -O3
+CFLAGS = -ggdb3 -Wall
 
 # Libs
-LIBS = huffman.c -pg
+LIBS = huffman.c
 
 # Build Target
 TARGET = main
