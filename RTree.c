@@ -1,6 +1,6 @@
 /*
 
-Huffman.c
+RTree.c
 
 */
 
@@ -9,7 +9,7 @@ Huffman.c
 #include <string.h>
 #include <pthread.h>
 
-#include "huffman.h"
+#include "RTree.h"
 
 
 

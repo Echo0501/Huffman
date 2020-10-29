@@ -1,5 +1,5 @@
 /**
- * Example program to use huffman lib
+ * Example program to use RTree lib
  * 
  * Makes a Node tree of rect, based on size of rects.
  * 
@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "huffman.h"
+#include "RTree.h"
 
 typedef struct {
 	float x1;

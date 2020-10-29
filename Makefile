@@ -3,16 +3,24 @@
 CC = gcc
 
 # Compile flags
-CFLAGS = -ggdb3 -Wall
+CFLAGS = -ggdb3 -Wall -pg
 
-# Libs
-LIBS = huffman.c
 
 # Build Target
 TARGET = main
+RT = RTree
 
-$(TARGET): $(TARGET).c
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c $(LIBS)
+all: $(TARGET)
+
+$(TARGET): $(TARGET).o $(RT).o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+$(TARGET).o: $(TARGET).c
+	$(CC) $(CFLAGS) -c $< $(LIBS)
+
+$(RT).o: $(RT).c
+	$(CC) $(CFLAGS) -c $< $(LIBS)
 
 clean:
-	$(RM) $(TARGET)
+	rm *.o
+	rm $(TARGET)
